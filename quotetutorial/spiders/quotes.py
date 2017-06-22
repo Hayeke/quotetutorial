@@ -21,5 +21,9 @@ class QuotesSpider(scrapy.Spider):
             item["tags"] = tags
             yield item
 
+        next=response.css(".pager .next a::attr(href)").extract_first()##链接提取，attr(属性名称)
+        url=response.urljoin(next)##urljoin方法获取绝对链接
+        yield scrapy.Request(url=url,callback=self.parse)#回调自己，完成递归的调用
+
 
 
